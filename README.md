@@ -1,4 +1,4 @@
-# POSITION MANAGEMENT SYSTEM
+# HRMS (Human Resource Management System)
 
 Welcome to the HRMS, a comprehensive Django-based Human Resource Management System designed to streamline position management, recruitment workflows, contract handling, reporting & analytics, and more. This README provides an overview of the system, installation instructions, documentation on how to use it, and details on its features.
 
