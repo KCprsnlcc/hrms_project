@@ -5,23 +5,43 @@
 
 <!-- Overall Stats (Positions, Vacant, Filled, Applicants) -->
 <div class="dashboard-stats">
+  <!-- 1. Total Positions -->
   <div class="stat-item">
+    <div class="stat-icon-bg">
+      <i class='bx bx-briefcase stat-icon'></i>
+    </div>
     <h3>Total Positions</h3>
     <p>{{ position_count }}</p>
   </div>
+
+  <!-- 2. Vacant -->
   <div class="stat-item">
+    <div class="stat-icon-bg">
+      <i class='bx bx-user stat-icon'></i>
+    </div>
     <h3>Vacant</h3>
     <p>{{ vacant_count }}</p>
   </div>
+
+  <!-- 3. Filled -->
   <div class="stat-item">
+    <div class="stat-icon-bg">
+      <i class='bx bx-user-check stat-icon'></i>
+    </div>
     <h3>Filled</h3>
     <p>{{ filled_count }}</p>
   </div>
+
+  <!-- 4. Total Applicants -->
   <div class="stat-item">
+    <div class="stat-icon-bg">
+      <i class='bx bx-group stat-icon'></i>
+    </div>
     <h3>Total Applicants</h3>
     <p>{{ applicant_count }}</p>
   </div>
 </div>
+
 
 <hr class="mt-2 mb-1">
 

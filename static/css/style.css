@@ -28,11 +28,33 @@
   
   body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--gray-bg);
-    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+  
+    /* Very subtle gradient from pure white (#fff) to a very light gray (#f8f8f8) */
+    background: linear-gradient(120deg, #ffffff 0%, #f8f8f8 100%);
+    background-attachment: fixed; /* gradient stays in place on scroll */
+  
+    color: #333;
     display: flex;
     flex-direction: column;
-    /* We'll rely on .page-wrapper to handle min-height */
+    min-height: 100vh;
+    position: relative;
+  }
+  
+  /* Optional faint pattern overlay: super low opacity so it’s almost invisible */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Replace this with any tiny pattern or a transparent PNG/SVG if you like */
+    background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iN3B4IiBoZWlnaHQ9IjZweCIgdmlld0JveD0iMCAwIDcgNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iN3B4IiBoZWlnaHQ9IjZweCIgcng9IjQiIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMC4wMiIgc3R5bGU9ImZpbGw6I2ZmZjtm") repeat;
+    opacity: 0.05;  /* extremely subtle */
+    pointer-events: none;
+    z-index: 0;
   }
   
   /* ---------------------------------------------------
@@ -168,33 +190,86 @@
   /* ---------------------------------------------------
      Dashboard / Stats
      --------------------------------------------------- */
-  .dashboard-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-  
-  .stat-item {
-    background-color: var(--yellow);
-    color: var(--green-dark);
-    flex: 1;
-    min-width: 180px;
-    padding: 1.5rem;
-    text-align: center;
-    border-radius: 6px;
-    transition: transform 0.3s;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-  }
-  
-  .stat-item h3 {
-    margin-bottom: 0.5rem;
-  }
-  
-  .stat-item:hover {
-    transform: translateY(-3px);
-  }
-  
+     .dashboard-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .stat-item {
+      /* White tile background */
+      background-color: #FFFFFF;
+      color: #17934C; /* or your main brand color */
+      flex: 1;
+      min-width: 200px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      border-radius: 8px;
+      position: relative; /* so we can place icon BG absolutely if we want */
+      overflow: hidden;   /* to clip any overflow */
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    /* Circle or gradient behind the icon */
+    .stat-icon-bg {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 0.5rem auto;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #17934C, #13803F);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative; 
+    }
+    
+    /* The icon itself */
+    .stat-icon {
+      font-size: 1.8rem; /* bigger icon */
+      color: #FFFFFF;    /* a contrasting color (yellow) or white if you prefer */
+    }
+    
+    /* Title and number styling */
+    .stat-item h3 {
+      margin: 0.5rem 0 0.3rem 0;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .stat-item p {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0;
+      color: #17934C; /* or a darker green for the text */
+    }
+    
+    /* Hover effect: slightly lift the card and intensify the shadow */
+    .stat-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    }
+    
+    /* Optional subtle animation for initial load (fade-in or scale-up) */
+    .stat-item {
+      opacity: 0;
+      animation: fadeInUp 0.5s forwards;
+      /* or scaleIn, etc. */
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
   /* ---------------------------------------------------
      Forms (General)
      --------------------------------------------------- */
