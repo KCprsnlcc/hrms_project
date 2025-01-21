@@ -6,10 +6,11 @@ from django.utils import timezone
 from django.http import JsonResponse, HttpResponseForbidden
 from django.core.mail import send_mail
 from django.db.models import Count
+import datetime
 from django.core.paginator import Paginator
 from django.db.models import Q  # For combined search filters
 from .models import (
-    Position, Applicant, Employee, Contract, ActivityLog
+    Position, Applicant, Employee, Contract, ActivityLog, Division
 )
 from .forms import PositionForm, ApplicantForm, ContractForm
 # position_app/views.py
@@ -263,34 +264,82 @@ def reports_view(request):
     """
     log_activity(request.user, "Viewed Reports Page")
     return render(request, 'position_app/reports.html')
-
 @login_required
 def reports_data_view(request):
     """
-    Returns JSON data for chart consumption
-    Example: Count positions by status
+    Returns JSON data for multiple charts in the reports page.
     """
-    positions_data = {}
+    # 1. Positions by Status
     statuses = [
-        'Vacant', 'For Selection', 'For Assumption',
-        'Reposted-For Exam', 'For Interview',
-        'For Deliberation', 'Filled', 'Retired', 'Hold'
+        'Vacant',
+        'For Selection',
+        'For Deliberation',
+        'For Assumption',
+        'Reposted-For Exam',
+        'Filled',
+        'Hold',
+        'Retired',
     ]
-    for status in statuses:
-        count = Position.objects.filter(status=status).count()
-        positions_data[status] = count
+    positions_by_status = {}
+    for st in statuses:
+        positions_by_status[st] = Position.objects.filter(status=st).count()
 
-    # Another example: Applicants by current_stage
-    applicants_data = {}
+    # 2. Applicants by Stage
     stages = [
-        'Document Review', 'Examination',
-        'Interview', 'Deliberation', 'Final Appointment'
+        'Document Review',
+        'Examination',
+        'Interview',
+        'Deliberation',
+        'Final Appointment'
     ]
-    for stage in stages:
-        applicants_data[stage] = Applicant.objects.filter(current_stage=stage).count()
+    applicants_by_stage = {}
+    for s in stages:
+        applicants_by_stage[s] = Applicant.objects.filter(current_stage=s).count()
 
-    # You can add more data sets for the front-end charts
+    # 3. Positions by Division
+    divisions = Division.objects.all()
+    positions_by_division = {}
+    for div in divisions:
+        positions_by_division[div.name] = Position.objects.filter(division=div).count()
+
+    # 4. Salary Distribution (Count of Positions per Salary Grade)
+    # If your Position model has a numeric 'salary_grade' field
+    from django.db.models import Count
+    salary_distribution_qs = (
+        Position.objects.values('salary_grade')
+        .annotate(count=Count('salary_grade'))
+        .order_by('salary_grade')
+    )
+    # Convert to a dict: {grade: count, ...}
+    salary_distribution = {}
+    for item in salary_distribution_qs:
+        grade_str = f"SG {item['salary_grade']}"  # e.g. "SG 15"
+        salary_distribution[grade_str] = item['count']
+
+    # 5. Upcoming Contract Expirations (e.g., next 60 days, grouped by month)
+    today = timezone.now().date()
+    next_60 = today + datetime.timedelta(days=60)
+    # We'll do a month-wise count for the next 3 months
+    import calendar
+    upcoming_expirations = {}
+    for i in range(3):
+        # Start of the i-th month from now
+        month_start = (today.replace(day=1) + datetime.timedelta(days=30*i))
+        end_day = calendar.monthrange(month_start.year, month_start.month)[1]
+        month_end = month_start.replace(day=end_day)
+
+        label = month_start.strftime("%b %Y")  # e.g. "Jan 2025"
+        count_in_month = Contract.objects.filter(
+            is_active=True,
+            end_date__range=[month_start, month_end]
+        ).count()
+        upcoming_expirations[label] = count_in_month
+
+    # Combine all data in a JSON response
     return JsonResponse({
-        'positionsData': positions_data,
-        'applicantsData': applicants_data
+        'positionsByStatus': positions_by_status,
+        'applicantsByStage': applicants_by_stage,
+        'positionsByDivision': positions_by_division,
+        'salaryDistribution': salary_distribution,
+        'upcomingExpirations': upcoming_expirations,
     })

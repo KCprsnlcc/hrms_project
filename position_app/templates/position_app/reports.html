@@ -1,15 +1,124 @@
 {% extends 'base.html' %}
-{% load static %} 
+{% load static %}
 {% block content %}
-<h2>Reports & Visualization</h2>
-<div>
-  <canvas id="positionsChart" width="400" height="200"></canvas>
-</div>
-<br>
-<div>
-  <canvas id="applicantsChart" width="400" height="200"></canvas>
+<h2 class="text-center">Reports & Analytics</h2>
+
+<!-- Time Filter & Export/Print Buttons -->
+<div class="report-controls" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+
+
+
+  <!-- Export/Print Buttons -->
+  <div>
+    <button class="btn" id="printButton">Print</button>
+  </div>
 </div>
 
+<p class="text-center">
+  These visualizations provide insights into Positions, Applicants, Salary Distribution, 
+  and Contract Expirations. Hover over the <i class='bx bx-info-circle'></i> icons 
+  to learn more about each chart.
+</p>
+
+<div class="reports-grid" id="reportSection">
+  <!-- 1. Positions by Status -->
+  <div class="report-card">
+    <h4>
+      Positions by Status
+      <span class="insight-icon" data-tooltip="Shows how many positions are in each status (Vacant, Filled, etc.).">
+        <i class='bx bx-info-circle'></i>
+      </span>
+    </h4>
+    <canvas id="positionsByStatusChart" width="300" height="200"></canvas>
+  </div>
+
+  <!-- 2. Applicants by Stage -->
+  <div class="report-card">
+    <h4>
+      Applicants by Stage
+      <span class="insight-icon" data-tooltip="Visualizes the count of applicants across different recruitment stages.">
+        <i class='bx bx-info-circle'></i>
+      </span>
+    </h4>
+    <canvas id="applicantsByStageChart" width="300" height="200"></canvas>
+  </div>
+
+  <!-- 3. Positions by Division -->
+  <div class="report-card">
+    <h4>
+      Positions by Division
+      <span class="insight-icon" data-tooltip="Breakdown of positions assigned to each division. Helps identify staffing gaps.">
+        <i class='bx bx-info-circle'></i>
+      </span>
+    </h4>
+    <canvas id="positionsByDivisionChart" width="300" height="200"></canvas>
+  </div>
+
+  <!-- 4. Salary Distribution -->
+  <div class="report-card">
+    <h4>
+      Salary Distribution
+      <span class="insight-icon" data-tooltip="Number of positions per salary grade. Useful for budgeting & compensation analysis.">
+        <i class='bx bx-info-circle'></i>
+      </span>
+    </h4>
+    <canvas id="salaryDistributionChart" width="300" height="200"></canvas>
+  </div>
+
+  <!-- 5. Upcoming Contract Expirations -->
+  <div class="report-card">
+    <h4>
+      Upcoming Expirations
+      <span class="insight-icon" data-tooltip="How many contracts will expire in the next few months, so you can plan renewals.">
+        <i class='bx bx-info-circle'></i>
+      </span>
+    </h4>
+    <canvas id="upcomingExpirationsChart" width="300" height="200"></canvas>
+  </div>
+</div>
+
+<div class="recommendations mt-2">
+  <h4>Recommendations</h4>
+  <ul>
+    <li>Focus on filling <strong>Vacant</strong> and <strong>For Selection</strong> positions in <strong>critical divisions</strong>.</li>
+    <li>Monitor <strong>contracts expiring in the next 90 days</strong> to ensure timely renewals or replacements.</li>
+    <li>Consider speeding up <strong>Examination</strong> and <strong>Interview</strong> stages for applicants to maintain an efficient pipeline.</li>
+    <li>Keep an eye on the <strong>Applicants vs. Employees ratio</strong>; high applicant numbers with fewer hires might indicate bottlenecks.</li>
+  </ul>
+</div>
+
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Boxicons (if needed) -->
+<link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+<!-- html2pdf library for PDF export -->
+<script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.9.3/dist/html2pdf.bundle.min.js"></script>
+
+<!-- Our custom JS for building charts -->
 <script src="{% static 'js/charts.js' %}"></script>
+
+<script>
+  // Print Button
+  document.getElementById('printButton').addEventListener('click', function() {
+    window.print();
+  });
+
+  // Export to PDF
+  document.getElementById('pdfButton').addEventListener('click', function() {
+    // We will export the #reportSection plus the recommendations
+    const element = document.getElementById('reportSection');
+    // Optional: create a cloned element that also includes recommendations
+    // But to keep it simple, let's do everything in main container
+    // We'll just do the entire body or we can do a container that wraps them
+    // For now let's use #reportSection as an example
+    const options = {
+      margin: 0.5,
+      filename: 'HR_Reports.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+    html2pdf().from(document.body).set(options).save();
+  });
+</script>
 {% endblock %}

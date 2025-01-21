@@ -157,6 +157,8 @@
     font-weight: 500;
     cursor: pointer;
   }
+
+
   
   .btn:hover {
     background-color: var(--yellow);
@@ -305,4 +307,63 @@
   .mb-1 {
     margin-bottom: 1rem;
   }
+  
+  .reports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .report-card {
+    background: #FFF;
+    border-radius: 4px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    position: relative;
+    text-align: center;
+  }
+  
+  .report-card h4 {
+    margin-bottom: 1rem;
+    position: relative; /* for tooltip alignment */
+  }
+  
+  /* Tooltip icon next to the title */
+  .insight-icon {
+    color: #666;
+    font-size: 1.1rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  /* On hover, show the tooltip using pseudo-element */
+  .insight-icon:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -40px; /* position above icon, adjust as needed */
+    left: 0;
+    background: rgba(0,0,0,0.75);
+    color: #FFF;
+    padding: 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  
+  /* A small pointer arrow for the tooltip */
+  .insight-icon:hover::before {
+    content: '';
+    position: absolute;
+    top: -10px; /* about 4px above the tooltip box's top */
+    left: 10px; /* place arrow somewhat near center */
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 6px solid rgba(0,0,0,0.75);
+  }
+  
   
