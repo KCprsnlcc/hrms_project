@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if is_create %}
+  <h2>Add New Contract</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+  </form>
+{% else %}
+  <h2>Contract Details</h2>
+  <p><strong>Employee:</strong> {{ contract.employee }}</p>
+  <p><strong>Start Date:</strong> {{ contract.start_date }}</p>
+  <p><strong>End Date:</strong> {{ contract.end_date }}</p>
+  <p><strong>Active:</strong> {{ contract.is_active }}</p>
+  {% if contract.contract_file %}
+    <p><strong>Contract File:</strong> <a href="{{ contract.contract_file.url }}" target="_blank">View</a></p>
+  {% endif %}
+{% endif %}
+<a href="{% url 'contract_list' %}">Back to Contracts</a>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block content %}
+<h2>Reports & Visualization</h2>
+<div>
+  <canvas id="positionsChart" width="400" height="200"></canvas>
+</div>
+<br>
+<div>
+  <canvas id="applicantsChart" width="400" height="200"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/charts.js' %}"></script>
+{% endblock %}

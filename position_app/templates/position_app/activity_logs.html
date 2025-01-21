@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Activity Logs</h2>
+
+<div class="search-form-inline">
+  <form method="get">
+    <label for="logs-search">Search:</label>
+    <input type="text" id="logs-search" name="q" placeholder="Search logs..." value="{{ search_query }}">
+    <button type="submit" class="btn">Search</button>
+  </form>
+</div>
+
+{% if logs %}
+  <table class="table-listing">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Action</th>
+        <th>Details</th>
+        <th>Date/Time</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for log in logs %}
+      <tr>
+        <td>
+          {% if log.user %}
+            {{ log.user.username }}
+          {% else %}
+            Anonymous
+          {% endif %}
+        </td>
+        <td>{{ log.action }}</td>
+        <td>{{ log.details|default:'-' }}</td>
+        <td>{{ log.created_at }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  {% if logs.has_other_pages %}
+    <div class="pagination mt-1">
+      {% if logs.has_previous %}
+        <a class="btn" href="?page={{ logs.previous_page_number }}&q={{ search_query }}">Previous</a>
+      {% endif %}
+      <span>Page {{ logs.number }} of {{ logs.paginator.num_pages }}</span>
+      {% if logs.has_next %}
+        <a class="btn" href="?page={{ logs.next_page_number }}&q={{ search_query }}">Next</a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% else %}
+  <p>No logs found.</p>
+{% endif %}
+{% endblock %}

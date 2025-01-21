@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Applicant List</h2>
+
+<div class="search-form-inline">
+  <form method="get">
+    <label for="applicant-search">Search:</label>
+    <input type="text" id="applicant-search" name="q" placeholder="Search applicants..." value="{{ search_query }}">
+    <button type="submit" class="btn">Search</button>
+  </form>
+</div>
+
+{% if applicants %}
+  <table class="table-listing">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Position Applied</th>
+        <th>Stage</th>
+        <th>Status</th>
+        <th>Date Applied</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for app in applicants %}
+      <tr>
+        <td>{{ app.last_name }}, {{ app.first_name }}</td>
+        <td>{{ app.position_applied.title }}</td>
+        <td>{{ app.current_stage }}</td>
+        <td>{{ app.status|default:'Pending' }}</td>
+        <td>{{ app.application_date }}</td>
+        <td><a href="{% url 'applicant_detail' app.pk %}">View</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  {% if applicants.has_other_pages %}
+    <div class="pagination mt-1">
+      {% if applicants.has_previous %}
+        <a class="btn" href="?page={{ applicants.previous_page_number }}&q={{ search_query }}">Previous</a>
+      {% endif %}
+      <span>Page {{ applicants.number }} of {{ applicants.paginator.num_pages }}</span>
+      {% if applicants.has_next %}
+        <a class="btn" href="?page={{ applicants.next_page_number }}&q={{ search_query }}">Next</a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% else %}
+  <p>No applicants found.</p>
+{% endif %}
+
+{% if perms.position_app.add_applicant %}
+  <a class="btn" href="{% url 'applicant_create' %}">Add Applicant</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Applicant Details</h2>
+<p><strong>Name:</strong> {{ applicant.last_name }}, {{ applicant.first_name }} {{ applicant.middle_name }}</p>
+<p><strong>Position Applied:</strong> {{ applicant.position_applied.title }}</p>
+<p><strong>Current Stage:</strong> {{ applicant.current_stage }}</p>
+<p><strong>Status:</strong> {{ applicant.status|default:'Pending' }}</p>
+<p><strong>Application Date:</strong> {{ applicant.application_date }}</p>
+
+<a href="{% url 'applicant_list' %}">Back to Applicants</a>
+{% endblock %}

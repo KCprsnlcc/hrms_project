@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Contracts</h2>
+
+<div class="search-form-inline">
+  <form method="get">
+    <label for="contract-search">Search:</label>
+    <input type="text" id="contract-search" name="q" placeholder="Search contracts..." value="{{ search_query }}">
+    <button type="submit" class="btn">Search</button>
+  </form>
+</div>
+
+{% if contracts %}
+  <table class="table-listing">
+    <thead>
+      <tr>
+        <th>Employee</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Active?</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for c in contracts %}
+      <tr>
+        <td>{{ c.employee.last_name }}, {{ c.employee.first_name }}</td>
+        <td>{{ c.start_date }}</td>
+        <td>{{ c.end_date }}</td>
+        <td>{{ c.is_active }}</td>
+        <td><a href="{% url 'contract_detail' c.pk %}">View</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  {% if contracts.has_other_pages %}
+    <div class="pagination mt-1">
+      {% if contracts.has_previous %}
+        <a class="btn" href="?page={{ contracts.previous_page_number }}&q={{ search_query }}">Previous</a>
+      {% endif %}
+      <span>Page {{ contracts.number }} of {{ contracts.paginator.num_pages }}</span>
+      {% if contracts.has_next %}
+        <a class="btn" href="?page={{ contracts.next_page_number }}&q={{ search_query }}">Next</a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% else %}
+  <p>No contracts found.</p>
+{% endif %}
+
+{% if perms.position_app.add_contract %}
+  <a class="btn" href="{% url 'contract_create' %}">Add Contract</a>
+{% endif %}
+{% endblock %}

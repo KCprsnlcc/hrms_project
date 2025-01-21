@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Position List</h2>
+
+<!-- Inline, right-aligned search -->
+<div class="search-form-inline">
+  <form method="get">
+    <label for="position-search">Search:</label>
+    <input type="text" id="position-search" name="q" placeholder="Search positions..." value="{{ search_query }}">
+    <button type="submit" class="btn">Search</button>
+  </form>
+</div>
+
+{% if positions %}
+  <table class="table-listing">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Plantilla Item</th>
+        <th>Salary Grade</th>
+        <th>Status</th>
+        <th>Division</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for pos in positions %}
+      <tr>
+        <td>{{ pos.title }}</td>
+        <td>{{ pos.plantilla_item_no }}</td>
+        <td>{{ pos.salary_grade }}</td>
+        <td>{{ pos.status }}</td>
+        <td>
+          {% if pos.division %}
+            {{ pos.division.name }}
+          {% else %}
+            N/A
+          {% endif %}
+        </td>
+        <td><a href="{% url 'position_detail' pos.pk %}">View</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  {% if positions.has_other_pages %}
+    <div class="pagination mt-1">
+      {% if positions.has_previous %}
+        <a class="btn" href="?page={{ positions.previous_page_number }}&q={{ search_query }}">Previous</a>
+      {% endif %}
+      <span>Page {{ positions.number }} of {{ positions.paginator.num_pages }}</span>
+      {% if positions.has_next %}
+        <a class="btn" href="?page={{ positions.next_page_number }}&q={{ search_query }}">Next</a>
+      {% endif %}
+    </div>
+  {% endif %}
+{% else %}
+  <p>No positions found.</p>
+{% endif %}
+
+{% if perms.position_app.add_position %}
+  <a class="btn" href="{% url 'position_create' %}">Create New Position</a>
+{% endif %}
+{% endblock %}

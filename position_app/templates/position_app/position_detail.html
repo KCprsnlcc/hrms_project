@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Position Details</h2>
+<p><strong>Title:</strong> {{ position.title }}</p>
+<p><strong>Plantilla Item No.:</strong> {{ position.plantilla_item_no }}</p>
+<p><strong>Salary Grade:</strong> {{ position.salary_grade }}</p>
+<p><strong>Status:</strong> {{ position.status }}</p>
+<p><strong>Division:</strong> 
+    {% if position.division %}
+      {{ position.division.name }}
+    {% else %}
+      N/A
+    {% endif %}
+  </p>  
+<p><strong>Date of Publication:</strong> {{ position.date_of_publication }}</p>
+<p><strong>Expiration Date:</strong> {{ position.expiration_date }}</p>
+<p><strong>Target Appointment Date:</strong> {{ position.target_date_of_appointment }}</p>
+
+<a href="{% url 'position_list' %}">Back to Positions</a>
+{% endblock %}

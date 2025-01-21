@@ -1,0 +1,308 @@
+/* ---------------------------------------------------
+   Base Setup / Colors
+   --------------------------------------------------- */
+   :root {
+    /* Primary palette (as variables) */
+    --green: #17934C;        /* brand green */
+    --green-dark: #13803F;   /* slightly darker green for hover/focus */
+    --yellow: #FFD13B;       
+    --yellow-hover: #FFC82C; /* slight hover shade */
+    --red: #DD253A;
+    --red-dark: #C01F32;
+    --white: #FFFFFF;
+    --gray-bg: #FAFAFA;      /* subtle gray background */
+    --text-color: #333333;   /* text color for better readability */
+    --max-width: 1200px;     /* container width for centering */
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Make html & body occupy full viewport height */
+  html, body {
+    height: 100%;
+  }
+  
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--gray-bg);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    /* We'll rely on .page-wrapper to handle min-height */
+  }
+  
+  /* ---------------------------------------------------
+     Page Wrapper (flex container for sticky footer)
+     --------------------------------------------------- */
+  .page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* ---------------------------------------------------
+     Header / Nav
+     --------------------------------------------------- */
+  .header-bar {
+    background-color: var(--green);
+    color: var(--white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .nav-brand {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    height: 50px;
+    margin-right: 10px;
+  }
+  
+  .brand-title {
+    font-size: 1.6rem;
+    color: var(--yellow);
+  }
+  
+  .nav-links a {
+    color: var(--white);
+    margin-left: 1.2rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  
+  .nav-links a:hover {
+    color: var(--yellow);
+  }
+  
+  /* ---------------------------------------------------
+     Main Container
+     --------------------------------------------------- */
+  .main-container {
+    flex: 1; /* occupies remaining space to push footer down if content is short */
+    max-width: var(--max-width);
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
+  /* ---------------------------------------------------
+     Footer (sticky at bottom if short content)
+     --------------------------------------------------- */
+  .footer-bar {
+    background-color: var(--red);
+    color: var(--white);
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  /* ---------------------------------------------------
+     Tables
+     --------------------------------------------------- */
+  .table-listing {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: var(--white);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .table-listing thead {
+    background-color: var(--green);
+    color: var(--white);
+  }
+  
+  .table-listing th {
+    text-align: left;
+    padding: 0.75rem;
+    font-weight: 600;
+  }
+  
+  .table-listing td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .table-listing tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .table-listing tr:nth-child(even) {
+    background-color: #FCFCFC;
+  }
+  
+  /* ---------------------------------------------------
+     Buttons / Links
+     --------------------------------------------------- */
+  .btn {
+    display: inline-block;
+    background-color: var(--red);
+    color: var(--white);
+    padding: 0.6rem 1.2rem;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 1rem;  /* default margin, might override in .search-form-inline if needed */
+    transition: background-color 0.3s, color 0.3s;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: var(--yellow);
+    color: var(--green);
+  }
+  
+  /* ---------------------------------------------------
+     Dashboard / Stats
+     --------------------------------------------------- */
+  .dashboard-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .stat-item {
+    background-color: var(--yellow);
+    color: var(--green-dark);
+    flex: 1;
+    min-width: 180px;
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: 6px;
+    transition: transform 0.3s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  }
+  
+  .stat-item h3 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-item:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* ---------------------------------------------------
+     Forms (General)
+     --------------------------------------------------- */
+  /* Larger forms for create/edit, displayed as 'cards' */
+  form {
+    background-color: var(--white);
+    padding: 1.5rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    max-width: 600px;
+    margin-top: 1rem;
+  }
+  
+  form label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 500;
+    color: var(--text-color);
+  }
+  
+  form input[type="text"],
+  form input[type="email"],
+  form input[type="password"],
+  form input[type="number"],
+  form input[type="date"],
+  form select,
+  form textarea {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    color: var(--text-color);
+    transition: border-color 0.3s;
+  }
+  
+  form input:focus,
+  form select:focus,
+  form textarea:focus {
+    border-color: var(--green-dark);
+    outline: none;
+  }
+  
+  /* Form Submit Button */
+  form button[type="submit"] {
+    background-color: var(--green);
+    border: none;
+    color: var(--white);
+    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  form button[type="submit"]:hover {
+    background-color: var(--green-dark);
+  }
+  
+  /* ---------------------------------------------------
+     Search Forms (Inline)
+     --------------------------------------------------- */
+  /*
+    We override the default 'form' styling for
+    simple search forms, so they appear inline
+    with label, input, and button on the same line
+    (aligned to the right).
+  */
+  .search-form-inline {
+    display: flex;              /* horizontal alignment */
+    align-items: center;        /* vertically center label, input, button */
+    justify-content: flex;  /* move them to the left side */
+    background: none;           /* remove card style */
+    box-shadow: none;           /* remove shadow */
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 1rem;        /* you can adjust as needed */
+    max-width: 100%;            /* no fixed width limit */
+  }
+  
+  .search-form-inline label {
+    margin-right: 0.5rem;
+  }
+  
+  .search-form-inline input[type="text"] {
+    width: auto;                /* or a fixed width if you prefer */
+    margin-right: 0.5rem;
+  }
+  
+  .search-form-inline .btn {
+    margin-top: 0;              /* remove top margin so it stays inline */
+  }
+    
+  /* ---------------------------------------------------
+     Misc. Utility Classes
+     --------------------------------------------------- */
+  .text-center {
+    text-align: center;
+  }
+  
+  .mt-1 {
+    margin-top: 1rem;
+  }
+  
+  .mt-2 {
+    margin-top: 2rem;
+  }
+  
+  .mb-1 {
+    margin-bottom: 1rem;
+  }
+  

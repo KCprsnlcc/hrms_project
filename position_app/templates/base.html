@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HRMS | DOH</title>
+
+  <!-- Animate.css for smooth transitions -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" />
+
+  <!-- Our custom CSS (style.css) -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+  <!-- Optional JS (script.js) -->
+  <script src="{% static 'js/script.js' %}"></script>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+  <!-- Header / Navigation -->
+  <header class="header-bar animate__animated animate__fadeInDown">
+    <div class="nav-brand">
+      <img src="{% static 'images/doh_logo.png' %}" alt="DOH Logo" class="logo">
+      <h1 class="brand-title">DOH HRMS</h1>
+    </div>
+    <nav class="nav-links">
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+      <a href="{% url 'position_list' %}">Positions</a>
+      <a href="{% url 'applicant_list' %}">Applicants</a>
+      <a href="{% url 'contract_list' %}">Contracts</a>
+      <a href="{% url 'reports' %}">Reports</a>
+      {% if user.is_superuser %}
+        <a href="{% url 'activity_logs' %}">Logs</a>
+      {% endif %}
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <!-- Main content with a fadeInUp animation -->
+  <main class="main-container animate__animated animate__fadeInUp">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Sticky Footer -->
+  <footer class="footer-bar">
+    <p>&copy; {{ year|default:'2025' }} Department of Health - HRMS</p>
+  </footer>
+
+</div>
+
+</body>
+</html>
